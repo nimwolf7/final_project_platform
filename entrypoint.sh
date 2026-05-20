@@ -39,6 +39,10 @@ chown -R www-data:www-data /app/var/cache /app/var/log
 
 echo "✓ File permissions set correctly"
 
+PORT_VALUE="${PORT:-8000}"
+sed "s/__PORT__/${PORT_VALUE}/g" /etc/nginx/conf.d/symfony.conf > /tmp/symfony.conf && mv /tmp/symfony.conf /etc/nginx/conf.d/symfony.conf
+echo "Using HTTP port: ${PORT_VALUE}"
+
 # Wait for database to be ready (if using Railway)
 if [ -n "${MYSQL_HOST}" ] || [ -n "${RAILWAY_TCP_PROXY_DOMAIN}" ]; then
     echo "Waiting for database to be ready..."
